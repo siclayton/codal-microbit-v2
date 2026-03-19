@@ -51,7 +51,7 @@ RECURSIVE_FIND_FILE(LIB_ARCHIVE_FILES "${CMAKE_CURRENT_LIST_DIR}/lib" "*.a")
 set(CMAKE_SYSTEM_PROCESSOR "armv7-m" PARENT_SCOPE)
 
 # ---- CMSIS-DSP (standalone repo) ----
-set(DSP "${CMAKE_CURRENT_LIST_DIR}/libraries/CMSIS-DSP")
+set(DSP "${CMAKE_CURRENT_LIST_DIR}/CMSIS-DSP")
 
 # CMSIS Core headers are included inside the standalone DSP repo
 list(APPEND INCLUDE_DIRS "${DSP}/Include")
