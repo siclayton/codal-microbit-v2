@@ -50,22 +50,21 @@ RECURSIVE_FIND_FILE(LIB_ARCHIVE_FILES "${CMAKE_CURRENT_LIST_DIR}/lib" "*.a")
 
 set(CMAKE_SYSTEM_PROCESSOR "armv7-m" PARENT_SCOPE)
 
-set(ROOT "${CMAKE_CURRENT_LIST_DIR}/CMSIS_5")
-list(APPEND INCLUDE_DIRS "${ROOT}/CMSIS/Core/Include/")
+# ---- CMSIS-DSP (standalone repo) ----
+set(DSP "${CMAKE_CURRENT_LIST_DIR}/libraries/CMSIS-DSP")
 
+# CMSIS Core headers are included inside the standalone DSP repo
+list(APPEND INCLUDE_DIRS "${DSP}/Include")
+list(APPEND INCLUDE_DIRS "${DSP}/Include/dsp")
+list(APPEND INCLUDE_DIRS "${DSP}/PrivateInclude")
 
-# Define the path to CMSIS-DSP (ROOT is defined on command line when using cmake)
-set(DSP ${ROOT}/CMSIS/DSP)
+# Target is Cortex-M4F (nRF52833)
+add_definitions(-DARM_MATH_CM4)
+add_definitions(-D__FPU_PRESENT=1)
 
-include(${DSP}/Toolchain/GCC.cmake)
-
-# Add DSP folder to module path
-list(APPEND CMAKE_MODULE_PATH ${DSP})
-
-###########
-#
-# CMSIS DSP
-#
+# Pull in the CMSIS-DSP CMake build system
+add_subdirectory("${DSP}" "${CMAKE_CURRENT_BINARY_DIR}/CMSIS-DSP")
+# --------------------------------------
 
 # add them
 include_directories(${INCLUDE_DIRS})
