@@ -53,18 +53,18 @@ set(CMAKE_SYSTEM_PROCESSOR "armv7-m" PARENT_SCOPE)
 # ---- CMSIS-DSP (standalone repo) ----
 set(DSP "${CMAKE_CURRENT_LIST_DIR}/CMSIS-DSP")
 
-# CMSIS Core headers are included inside the standalone DSP repo
+# Point to CMSIS Core headers
+set(CMSISCORE "${CMAKE_CURRENT_LIST_DIR}/libraries/CMSIS_6/CMSIS/Core" CACHE PATH "CMSIS Core path")
+
 list(APPEND INCLUDE_DIRS "${DSP}/Include")
 list(APPEND INCLUDE_DIRS "${DSP}/Include/dsp")
 list(APPEND INCLUDE_DIRS "${DSP}/PrivateInclude")
+list(APPEND INCLUDE_DIRS "${CMSISCORE}/Include")
 
-# Target is Cortex-M4F (nRF52833)
 add_definitions(-DARM_MATH_CM4)
 add_definitions(-D__FPU_PRESENT=1)
 
-# Pull in the CMSIS-DSP CMake build system
 add_subdirectory("${DSP}" "${CMAKE_CURRENT_BINARY_DIR}/CMSIS-DSP")
-# --------------------------------------
 
 # add them
 include_directories(${INCLUDE_DIRS})
@@ -77,11 +77,7 @@ target_link_libraries(
         codal-nrf52
         codal-core
         codal-microbit-nrf5sdk
-        CMSISDSPSupport
-        CMSISDSPTransform
-        CMSISDSPCommon
-        CMSISDSPComplexMath
-        CMSISDSPStatistics
+        CMSISDSP
         ${LIB_OBJECT_FILES}
         ${LIB_ARCHIVE_FILES}
 )
